@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# Data files (keep structure, ignore large files)
+data/*.csv
+data/*.json
+!data/.gitkeep
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Output files
+*.log
+*.tmp
+output/
+reports/
+
+# Environment variables
+.env
+.env.local
+
+
+

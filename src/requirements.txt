@@ -1,0 +1,7 @@
+# Netflix Content Quality Analysis - Requirements
+
+# Data Analysis
+pandas>=1.5.0
+
+# Visualization
+matplotlib>=3.5.0
