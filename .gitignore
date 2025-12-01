@@ -9,9 +9,10 @@ venv/
 ENV/
 .venv
 
-# Data files (keep structure, ignore large files)
-data/*.csv
+# Data files - ignore generated/processed files, but keep raw data
+data/processed/*
 data/*.json
+!data/netflix_titles.csv
 !data/.gitkeep
 
 # Jupyter Notebook
