@@ -2,19 +2,37 @@
 
 This guide explains how to create a Power BI dashboard for Netflix Content Quality Analysis.
 
+## Quick Overview
+
+These visualizations match the SQL reports in `sql/business_reports.sql`:
+
+- **Report 1** → KPI Cards (Overview Statistics)
+- **Report 2** → Bar Chart (Top 10 Countries)
+- **Report 3** → Bar Chart (Genre Distribution)
+- **Report 4** → Pie Chart (Movies vs TV Shows)
+- **Report 5** → Line Chart (Content Over Time)
+- **Report 6** → Area Chart (New Content by Month)
+- **Report 7** → Stacked Bar (Data Quality by Type)
+
 ## Prerequisites
 
 - Power BI Desktop installed
-- Processed data file:
-  - `data/processed/netflix_cleaned.csv` (from Python data cleaning)
+- **Important:** First run the Python script to create cleaned data:
+  ```bash
+  python 01_python_data_cleaning.py
+  ```
+- Processed data file will be created:
+  - `data/processed/netflix_cleaned.csv`
 
-## Data Import
+## Step 1: Import Data
 
 1. Open Power BI Desktop
-2. Click "Get Data" → "Text/CSV"
-3. Navigate to `data/processed/netflix_cleaned.csv`
-4. Click "Load"
+2. Click **"Get Data"** → **"Text/CSV"**
+3. Navigate to: `data/processed/netflix_cleaned.csv`
+4. Click **"Load"**
 5. Verify the data loaded correctly (should show ~8,000+ rows)
+
+**Tip:** The cleaned data matches the SQL reports in `sql/business_reports.sql`
 
 ## Dashboard Design
 
@@ -99,11 +117,28 @@ This guide explains how to create a Power BI dashboard for Netflix Content Quali
    - Values: Count for each metadata field (director, cast, country, rating, description)
    - Shows completeness by type
 
-3. **Horizontal Bar Chart - Missing Values**
-   - Axis: Column names
-   - Values: Count of null values
-   - Shows which fields have most missing data
-   - Sort by: Count descending
+3. **Horizontal Bar Chart - Missing Values** (Same as Python Plot!)
+   - This matches your Python visualization: `data/processed/missing_values_visualization.png`
+   - Shows: Top 10 columns with missing values
+   - **Simple Method - Step by Step:**
+     1. Click **"Clustered bar chart"** visual
+     2. Create DAX measures (New measure button):
+        ```dax
+        Missing Director = CALCULATE(COUNTROWS(netflix_cleaned), ISBLANK(netflix_cleaned[director]))
+        Missing Cast = CALCULATE(COUNTROWS(netflix_cleaned), ISBLANK(netflix_cleaned[cast]))
+        Missing Country = CALCULATE(COUNTROWS(netflix_cleaned), ISBLANK(netflix_cleaned[country]))
+        Missing Rating = CALCULATE(COUNTROWS(netflix_cleaned), ISBLANK(netflix_cleaned[rating]))
+        Missing Date Added = CALCULATE(COUNTROWS(netflix_cleaned), ISBLANK(netflix_cleaned[date_added]))
+        ```
+     3. Create a simple table with column names:
+        - Create calculated table or manually list: director, cast, country, rating, date_added
+     4. In bar chart:
+        - Y-Axis: Column names
+        - Values: Missing counts (use your measures)
+     5. Sort: Descending
+     6. Filter: Top 10
+     7. Title: "Top 10 Columns with Missing Values"
+   - **Result:** Same visualization as Python plot, but interactive!
 
 4. **Waterfall Chart - Data Quality Improvement**
    - Shows data quality before and after cleaning
