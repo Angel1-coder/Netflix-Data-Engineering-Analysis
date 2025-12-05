@@ -46,6 +46,14 @@ print("\n5. Cleaning data...")
 df_cleaned = df.drop_duplicates(subset=['title', 'release_year', 'type'], keep='first')
 df_cleaned = df_cleaned.replace(r'^\s*$', None, regex=True)
 
+# Remove line breaks in text fields to ensure Power BI compatibility
+text_columns = ['title', 'director', 'cast', 'country', 'description', 'listed_in']
+for col in text_columns:
+    if col in df_cleaned.columns:
+        df_cleaned[col] = df_cleaned[col].fillna('').astype(str).str.replace('\n', ' ', regex=False).str.replace('\r', ' ', regex=False)
+        # Replace 'nan' strings back to empty string
+        df_cleaned[col] = df_cleaned[col].replace('nan', '', regex=False)
+
 if 'date_added' in df_cleaned.columns:
     df_cleaned['date_added'] = pd.to_datetime(df_cleaned['date_added'], errors='coerce')
 
@@ -100,8 +108,10 @@ plt.savefig('data/processed/missing_values_visualization.png', dpi=150, bbox_inc
 print("   Chart saved: data/processed/missing_values_visualization.png")
 
 print("\n8. Exporting cleaned data...")
-df_cleaned.to_csv('data/processed/netflix_cleaned.csv', index=False)
+# Export with proper CSV formatting for Power BI compatibility
+df_cleaned.to_csv('data/processed/netflix_cleaned.csv', index=False, encoding='utf-8')
 print("   CSV exported: data/processed/netflix_cleaned.csv")
+print("   Note: Line breaks in text fields have been removed for Power BI compatibility")
 
 with open('data/processed/data_quality_report.json', 'w', encoding='utf-8') as f:
     json.dump(quality_report, f, indent=2, ensure_ascii=False)

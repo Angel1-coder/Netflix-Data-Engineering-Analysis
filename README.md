@@ -87,7 +87,7 @@ Open `sql/business_reports.sql` in your SQL editor and execute the queries.
 
 ### Step 5: Power BI - Dashboard (optional)
 
-Follow the instructions in `dashboards/POWER_BI_SETUP.md`  
+See the detailed Power BI Dashboard guide below or follow the instructions in `dashboards/POWER_BI_SETUP.md`.  
 Import `data/processed/netflix_cleaned.csv` into Power BI.
 
 ## Clear Division of Work
@@ -179,6 +179,237 @@ TOP 3 Countries:
 ## Questions?
 
 Check the documentation or open an issue.
+
+---
+
+## Power BI Dashboard Setup
+
+Complete Guide:
+
+<details>
+<summary><b>Show Power BI Dashboard Guide</b></summary>
+
+# Power BI Dashboard Guide - Netflix Content Analysis
+
+This guide is based on the final dashboard with all visuals.
+
+## Dashboard Overview
+
+The dashboard consists of the following visuals:
+
+1. **4 KPI Cards:**
+   - Total Titles (8807)
+   - Total Movies (6131)
+   - FULL METADATA TITLES (5335)
+   - Total TV Shows (2676)
+
+2. **Pie Chart:** Movies vs TV Shows
+
+3. **Bar Chart:** Top 10 Countries
+
+4. **Line Chart:** Content Growth Over Time
+
+5. **Scatter Plot:** Title Volume by Release Year and Country
+
+---
+
+## STEP 1: Load Data
+
+1. Open Power BI Desktop
+2. Click **"Get Data"** → **"Text/CSV"**
+3. Navigate to: `data/processed/netflix_cleaned.csv`
+4. Click **"Load"**
+
+**Important:** Always use `netflix_cleaned.csv`, NOT the raw file!
+
+---
+
+## STEP 2: Create KPI Cards
+
+### KPI Card 1: "Total Titles"
+
+1. **Create Card Visual:**
+   - Panel "Visualizations" → Click on **"Card"**
+
+2. **Create DAX Measure:**
+   - Panel "Data": Right-click on `netflix_cleaned` → **"New measure"**
+   - Formula:
+     ```dax
+     Total Titles = COUNTROWS(netflix_cleaned)
+     ```
+
+3. **Add to Card:**
+   - Drag "Total Titles" into the Card
+
+4. **Format:**
+   - Format → Title: **"Total Titles"**
+   - Background color: Yellow (optional)
+
+---
+
+### KPI Card 2: "Total Movies"
+
+1. Create new Card
+2. DAX Measure:
+   ```dax
+   Total Movies = CALCULATE(COUNTROWS(netflix_cleaned), netflix_cleaned[type] = "Movie")
+   ```
+3. Title: **"Total Movies"**
+4. Background color: Red (optional)
+
+---
+
+### KPI Card 3: "FULL METADATA TITLES"
+
+1. Create new Card
+2. DAX Measure:
+   ```dax
+   Full Metadata Titles = 
+   CALCULATE(
+       COUNTROWS(netflix_cleaned),
+       netflix_cleaned[director] <> BLANK(),
+       netflix_cleaned[cast] <> BLANK(),
+       netflix_cleaned[country] <> BLANK(),
+       netflix_cleaned[rating] <> BLANK(),
+       netflix_cleaned[description] <> BLANK()
+   )
+   ```
+3. Title: **"FULL METADATA TITLES"** (uppercase)
+4. Background color: Gray (optional)
+
+---
+
+### KPI Card 4: "Total TV Shows"
+
+1. Create new Card
+2. DAX Measure:
+   ```dax
+   Total TV Shows = CALCULATE(COUNTROWS(netflix_cleaned), netflix_cleaned[type] = "TV Show")
+   ```
+3. Title: **"Total TV Shows"**
+4. Background color: Blue (optional)
+
+---
+
+## STEP 3: Pie Chart "Movies vs TV Shows"
+
+1. **Create Pie Chart:**
+   - Panel "Visualizations" → Click on **"Pie chart"**
+
+2. **Add Data:**
+   - **Legend:** Drag `type` into it
+   - **Values:** Drag `show_id` into it (as count)
+
+3. **Format:**
+   - Format → Title: **"Movies vs TV Shows"**
+
+---
+
+## STEP 4: Bar Chart "Top 10 Countries"
+
+1. **Create Bar Chart:**
+   - Panel "Visualizations" → Click on **"Clustered bar chart"**
+
+2. **Add Data:**
+   - **Axis (Y-axis):** Drag `country` into it
+   - **Values (X-axis):** Drag `show_id` into it (as count)
+
+3. **Show Top 10:**
+   - Three dots (...) on chart → **"Sort by"** → `show_id` → **Descending**
+   - Three dots again → **"Top N"** → Set to **10**
+
+4. **Format:**
+   - Format → Title: **"Top 10 Countries"**
+
+---
+
+## STEP 5: Line Chart "Content Growth Over Time"
+
+1. **Create Line Chart:**
+   - Panel "Visualizations" → Click on **"Line chart"**
+
+2. **Add Data:**
+   - **Axis (X-axis):** Drag `release_year` into it
+   - **Values (Y-axis):** Drag `show_id` into it (as count)
+   - **Legend:** Drag `type` into it (for separate lines)
+
+3. **Format:**
+   - Format → Title: **"CONTENT GROWTH OVER TIME"** (uppercase)
+
+---
+
+## STEP 6: Scatter Plot "Title Volume by Release Year and Country"
+
+1. **Create Scatter Plot:**
+   - Panel "Visualizations" → Click on **"Scatter chart"**
+
+2. **Add Data:**
+   - **X-Axis:** Drag `show_id` into it
+   - **Y-Axis:** Drag `release_year` into it
+   - **Details:** Drag `country` into it (optional, for grouping)
+
+3. **Format:**
+   - Format → Title: **"TITLE VOLUME BY RELEASE YEAR AND COUNTRY"**
+
+---
+
+## Layout Arrangement
+
+**Recommended Arrangement (as in dashboard):**
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  [Card 1]  [Card 2]  [Card 3]  [Card 4]  │  [Pie]     │
+├─────────────────────────────────────────────────────────┤
+│  [Bar: Countries]     │  [Scatter Plot]                │
+├─────────────────────────────────────────────────────────┤
+│  [Line Chart: Growth]                                    │
+└─────────────────────────────────────────────────────────┘
+```
+
+- **Top left:** 4 KPI Cards side by side
+- **Top right:** Pie Chart
+- **Middle left:** Bar Chart (Countries)
+- **Middle right:** Scatter Plot
+- **Bottom:** Line Chart (full width)
+
+---
+
+## All DAX Measures (To Copy)
+
+```dax
+Total Titles = COUNTROWS(netflix_cleaned)
+
+Total Movies = CALCULATE(COUNTROWS(netflix_cleaned), netflix_cleaned[type] = "Movie")
+
+Total TV Shows = CALCULATE(COUNTROWS(netflix_cleaned), netflix_cleaned[type] = "TV Show")
+
+Full Metadata Titles = 
+CALCULATE(
+    COUNTROWS(netflix_cleaned),
+    netflix_cleaned[director] <> BLANK(),
+    netflix_cleaned[cast] <> BLANK(),
+    netflix_cleaned[country] <> BLANK(),
+    netflix_cleaned[rating] <> BLANK(),
+    netflix_cleaned[description] <> BLANK()
+)
+```
+
+---
+
+## Common Problems & Solutions
+
+### Problem: "First Date: show_id" appears
+**Solution:** Use DAX Measures instead of directly using `show_id`!
+
+### Problem: No numbers are displayed
+**Solution:** Check if `netflix_cleaned.csv` was loaded and use DAX Measures.
+
+---
+
+**Good luck!**
+
+</details>
 
 ---
 

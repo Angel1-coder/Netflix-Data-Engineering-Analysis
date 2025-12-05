@@ -32,7 +32,11 @@ These visualizations match the SQL reports in `sql/business_reports.sql`:
 4. Click **"Load"**
 5. Verify the data loaded correctly (should show ~8,000+ rows)
 
-**Tip:** The cleaned data matches the SQL reports in `sql/business_reports.sql`
+**Important Notes:**
+- Always use `data/processed/netflix_cleaned.csv` (NOT the raw `netflix_titles.csv`)
+- The cleaned file has line breaks removed from text fields for Power BI compatibility
+- If you see import errors, run the Python cleaning script first: `python 01_python_data_cleaning.py`
+- The cleaned data matches the SQL reports in `sql/business_reports.sql`
 
 ## Dashboard Design
 
@@ -65,6 +69,12 @@ These visualizations match the SQL reports in `sql/business_reports.sql`:
    - Values: Count of `show_id`
    - Legend: `type` (Movie vs TV Show)
    - Filter: Years >= 2000
+
+6. **Missing Values Plot (Bottom Right Corner)** ⭐
+   - Same as your Python visualization: `missing_values_visualization.png`
+   - Visual: Horizontal Bar Chart
+   - Position: Bottom right corner of dashboard
+   - See Page 3, Visual #3 for detailed instructions
 
 ### Page 2: Content Analysis
 
@@ -202,6 +212,42 @@ Add these filters to all pages:
 - **Year Filter**: Slicer for `release_year` (range)
 - **Rating Filter**: Multi-select for `rating`
 
+## Dashboard Layout & Design
+
+### Recommended Layout for Page 1 (Overview Dashboard)
+
+**Visual Layout (Like in the video):**
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  [KPI 1]  [KPI 2]  [KPI 3]  [KPI 4]  │  [Pie Chart]    │
+├─────────────────────────────────────────────────────────┤
+│  [Bar Chart - Countries]  │  [Bar Chart - Rating]      │
+├─────────────────────────────────────────────────────────┤
+│  [Line Chart - Growth]    │  [Missing Values Plot] ⭐  │
+│                           │  (Bottom Right Corner)     │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Top Section (Left to Right):**
+- **Left:** KPI Cards (4 cards in a row: Total Titles, Movies, TV Shows, Full Metadata)
+- **Right:** Pie Chart (Movies vs TV Shows)
+
+**Middle Section:**
+- **Left:** Bar Chart (Top 10 Countries)
+- **Right:** Bar Chart (Rating Distribution)
+
+**Bottom Section:**
+- **Left:** Line Chart (Content Growth Over Time)
+- **Right (Bottom Right Corner):** **Missing Values Plot** ⭐ (Like your Python visualization!)
+
+### Layout Tips:
+1. **Use grid layout:** Enable "View" → "Gridlines" in Power BI for alignment
+2. **Consistent sizing:** Make similar charts the same size
+3. **Bottom right plot:** Place your Missing Values visualization (Horizontal Bar Chart) in the bottom right corner
+4. **Spacing:** Leave some space between visuals for a clean look
+5. **Responsive:** Test on different screen sizes
+
 ## Formatting Tips
 
 1. Use consistent color scheme across all pages
@@ -209,6 +255,7 @@ Add these filters to all pages:
 3. Format numbers appropriately (no decimals for counts, 1 decimal for percentages)
 4. Use tooltips for additional context
 5. Ensure responsive layout for different screen sizes
+6. **Layout like the video:** Arrange visuals in a grid with plot/chart in bottom right corner
 
 ## Publishing
 

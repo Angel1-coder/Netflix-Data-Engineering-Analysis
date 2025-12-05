@@ -1,0 +1,40 @@
+{
+  "before_cleaning": {
+    "total_titles": 8807,
+    "titles_with_full_metadata": 5335,
+    "pct_full_metadata": 60.57681389803565,
+    "total_missing_values": 4307,
+    "duplicates": 0
+  },
+  "after_cleaning": {
+    "total_titles": 8807,
+    "titles_with_full_metadata": 8803,
+    "titles_removed": 0
+  },
+  "missing_values_by_column": {
+    "director": {
+      "count": 2634,
+      "percentage": 29.91
+    },
+    "country": {
+      "count": 831,
+      "percentage": 9.44
+    },
+    "cast": {
+      "count": 825,
+      "percentage": 9.37
+    },
+    "date_added": {
+      "count": 10,
+      "percentage": 0.11
+    },
+    "rating": {
+      "count": 4,
+      "percentage": 0.05
+    },
+    "duration": {
+      "count": 3,
+      "percentage": 0.03
+    }
+  }
+}
