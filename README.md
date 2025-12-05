@@ -184,6 +184,8 @@ Check the documentation or open an issue.
 
 ## Power BI Dashboard Setup
 
+![Netflix Power BI Dashboard](dashboards/dashboard_screenshot.png)
+
 Complete Guide:
 
 <details>
